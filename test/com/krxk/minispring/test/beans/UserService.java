@@ -1,19 +1,26 @@
 package com.krxk.minispring.test.beans;
 
 public class UserService {
-    private String name;
-    public UserService(String name) {
-        this.name = name;
+    private String uid;
+    private UserDao userDao;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     public void queryUserInfo() {
-        System.out.println("查询用户信息" + name);
-    }
-
-    @Override
-    public String toString() {
-        return "UserService{" +
-                "name='" + name + '\'' +
-                '}';
+        System.out.println("查询用户信息 " + userDao.queryUserName(uid));
     }
 }
