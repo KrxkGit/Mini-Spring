@@ -6,6 +6,7 @@ import com.krxk.minispring.beans.factory.config.BeanDefinition;
 import java.util.HashMap;
 import java.util.Map;
 
+// 结合类缓存、对象单例
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry {
     Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();
     @Override

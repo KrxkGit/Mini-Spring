@@ -8,16 +8,19 @@ import org.junit.Test;
 public class ApiTest {
     @Test
     public void test_BeanFactory() {
+        // 初始化 Bean 工厂
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
+        // 注入 Bean
         BeanDefinition beanDefinition = new BeanDefinition(UserService.class);
-
         beanFactory.registerBeanDefinition("userService", beanDefinition);
 
-        UserService userService = (UserService) beanFactory.getBean("userService");
+        // 获取 Bean
+        UserService userService = (UserService) beanFactory.getBean("userService", "Krxk");
         userService.queryUserInfo();
 
-        UserService userService_singleton = (UserService) beanFactory.getBean("userService");
-        userService_singleton.queryUserInfo();
+//        // 测试单例模式
+//        UserService userService_singleton = (UserService) beanFactory.getBean("userService");
+//        userService_singleton.queryUserInfo();
     }
 }
