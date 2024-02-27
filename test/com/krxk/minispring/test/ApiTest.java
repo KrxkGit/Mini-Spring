@@ -1,15 +1,52 @@
 package com.krxk.minispring.test;
 
+import cn.hutool.core.io.IoUtil;
 import com.krxk.minispring.beans.PropertyValue;
 import com.krxk.minispring.beans.PropertyValues;
 import com.krxk.minispring.beans.factory.config.BeanDefinition;
 import com.krxk.minispring.beans.factory.config.BeanReference;
 import com.krxk.minispring.beans.factory.support.DefaultListableBeanFactory;
+import com.krxk.minispring.beans.factory.xml.XmlBeanDefinitionReader;
+import com.krxk.minispring.core.io.DefaultResourceLoader;
+import com.krxk.minispring.core.io.Resource;
 import com.krxk.minispring.test.beans.UserDao;
 import com.krxk.minispring.test.beans.UserService;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public class ApiTest {
+    private DefaultResourceLoader resourceLoader;
+    @Before
+    public void init() {
+        resourceLoader = new DefaultResourceLoader();
+    }
+    @Test
+    public void test_classpath() throws IOException {
+        Resource resource = resourceLoader.getResource("classpath:resources/important.properties");
+        InputStream inputStream = resource.getInputStream();
+        String content = IoUtil.readUtf8(inputStream);
+        System.out.println(content);
+    }
+    @Test
+    public void test_file() throws IOException {
+        Resource resource = resourceLoader.getResource("test/resources/important.properties");
+        InputStream inputStream = resource.getInputStream();
+        String content = IoUtil.readUtf8(inputStream);
+        System.out.println(content);
+    }
+
+    @Test
+    public void test_url() throws IOException {
+        Resource resource = resourceLoader.getResource(
+                "https://github.com/KrxkGit/Mini-Spring/blob/main/test/resources/important.properties");
+        InputStream inputStream = resource.getInputStream();
+        String content = IoUtil.readUtf8(inputStream);
+        System.out.println(content);
+    }
+
     @Test
     public void test_BeanFactory() {
         // 初始化 Bean 工厂
@@ -29,6 +66,19 @@ public class ApiTest {
 
         // 获取 Bean
         UserService userService = (UserService) beanFactory.getBean("userService");
+        userService.queryUserInfo();
+    }
+
+    @Test
+    public void test_xml() {
+        DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+
+        // 读取配置 & 注册 Bean
+        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+        reader.loadBeanDefinitions("classpath:resources/Spring.xml");
+
+        // 获取对象 Bean
+        UserService userService = (UserService) beanFactory.getBean("userService", UserService.class);
         userService.queryUserInfo();
     }
 }
