@@ -2,6 +2,7 @@ package com.krxk.minispring.test.beans;
 
 public class UserService {
     private String uid;
+    private String company;
     private UserDao userDao;
 
     public String getUid() {
@@ -21,6 +22,6 @@ public class UserService {
     }
 
     public void queryUserInfo() {
-        System.out.println("查询用户信息 " + userDao.queryUserName(uid));
+        System.out.println("查询用户信息 " + uid + " 公司:" +company + " " + userDao.queryUserName(uid));
     }
 }

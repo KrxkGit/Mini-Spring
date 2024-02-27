@@ -7,10 +7,13 @@ import com.krxk.minispring.beans.factory.config.BeanDefinition;
 import com.krxk.minispring.beans.factory.config.BeanReference;
 import com.krxk.minispring.beans.factory.support.DefaultListableBeanFactory;
 import com.krxk.minispring.beans.factory.xml.XmlBeanDefinitionReader;
+import com.krxk.minispring.context.support.ClassPathXmlApplicationContext;
 import com.krxk.minispring.core.io.DefaultResourceLoader;
 import com.krxk.minispring.core.io.Resource;
 import com.krxk.minispring.test.beans.UserDao;
 import com.krxk.minispring.test.beans.UserService;
+import com.krxk.minispring.test.common.MyBeanFactoryPostProcessor;
+import com.krxk.minispring.test.common.MyBeanPostProcessor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -79,6 +82,32 @@ public class ApiTest {
 
         // 获取对象 Bean
         UserService userService = (UserService) beanFactory.getBean("userService", UserService.class);
+        userService.queryUserInfo();
+    }
+    @Test
+    public void test_BeanFactoryPostProcessorAndBeanPostProcessor() {
+        // 不使用上下文
+        DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+        XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
+        beanDefinitionReader.loadBeanDefinitions("classpath:resources/Spring.xml");
+
+        MyBeanFactoryPostProcessor beanFactoryPostProcessor = new MyBeanFactoryPostProcessor();
+        beanFactoryPostProcessor.postProcessBeanFactory(beanFactory);
+
+        MyBeanPostProcessor beanPostProcessor = new MyBeanPostProcessor();
+        beanFactory.addBeanPostProcessor(beanPostProcessor);
+
+        UserService userService = beanFactory.getBean("userService", UserService.class);
+        userService.queryUserInfo();
+    }
+
+    @Test
+    public void test_ContextAndXml() {
+        // 使用上下文
+        ClassPathXmlApplicationContext applicationContext =
+                new ClassPathXmlApplicationContext("classpath:resources/Spring.xml");
+
+        UserService userService = applicationContext.getBean("userService", UserService.class);
         userService.queryUserInfo();
     }
 }

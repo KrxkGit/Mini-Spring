@@ -5,6 +5,7 @@ import com.krxk.minispring.beans.BeansException;
 import com.krxk.minispring.beans.PropertyValue;
 import com.krxk.minispring.beans.PropertyValues;
 import com.krxk.minispring.beans.factory.config.BeanDefinition;
+import com.krxk.minispring.beans.factory.config.BeanPostProcessor;
 import com.krxk.minispring.beans.factory.config.BeanReference;
 
 import java.lang.reflect.Constructor;
@@ -16,11 +17,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     protected Object createBean(String beanName, BeanDefinition beanDefinition, Object[] args) throws BeansException {
         Object bean;
         try {
-//            bean = beanDefinition.getBeanClass().getDeclaredConstructor().newInstance();
             // 创建对象
             bean = createBeanInstance(beanDefinition, beanName, args);
             // 填充属性
             applyPropertyValues(beanName, bean, beanDefinition);
+            // 执行 Bean 的初始化方法和 BeanPostProcessor 的前置和后置处理方法
+            bean = initializeBean(beanName, bean, beanDefinition);
         } catch (Exception e) {
             throw new BeansException("Instantiation of bean failed", e);
         }
@@ -64,6 +66,45 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         } catch (Exception e) {
             throw new BeansException("Error setting property values：" + beanName);
         }
+    }
+
+    @Override
+    public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName) throws BeansException {
+        Object result = existingBean;
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            Object current = beanPostProcessor.postProcessBeforeInitialization(result, beanName);
+            if (null == current) {
+                return  result;
+            }
+            result = current;
+        }
+        return result;
+    }
+
+    @Override
+    public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) throws BeansException {
+        Object result = existingBean;
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            Object current = beanPostProcessor.postProcessAfterInitialization(result, beanName);
+            if (null == current) {
+                return  result;
+            }
+            result = current;
+        }
+        return result;
+    }
+
+    private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+        // 执行 BeanPostProcessor Before 处理
+        Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
+        // 待完成内容：invokeInitMethods(beanName, wrappedBean, beanDefinition)
+        invokeInitMethods(beanName, wrappedBean, beanDefinition);
+        // 执行 BeanPostProcessor After 处理
+        wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
+        return wrappedBean;
+    }
+
+    private void invokeInitMethods(String beanName, Object wrappedBean, BeanDefinition beanDefinition) {
 
     }
 }

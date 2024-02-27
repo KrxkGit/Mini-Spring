@@ -1,6 +1,7 @@
 package com.krxk.minispring.beans.factory.support;
 
 import com.krxk.minispring.beans.BeansException;
+import com.krxk.minispring.beans.factory.ConfigurableListableBeanFactory;
 import com.krxk.minispring.beans.factory.config.BeanDefinition;
 import com.krxk.minispring.beans.factory.config.ConfigurableBeanFactory;
 
@@ -9,7 +10,7 @@ import java.util.Map;
 
 // 结合类缓存、对象单例
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
-        implements BeanDefinitionRegistry, ConfigurableBeanFactory {
+        implements BeanDefinitionRegistry, ConfigurableListableBeanFactory {
     Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();
     @Override
     public BeanDefinition getBeanDefinition(String beanName) throws BeansException {
@@ -18,6 +19,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
             throw new BeansException("No bean named '" + beanName + "' is defined");
         }
         return  beanDefinition;
+    }
+
+    @Override
+    public void preInstantiateSingletons() throws BeansException {
+        beanDefinitionMap.keySet().forEach(this::getBean);
     }
 
     @Override
@@ -46,4 +52,5 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     public String[] getBeanDefinitionNames() {
         return beanDefinitionMap.keySet().toArray(new String[0]);
     }
+
 }

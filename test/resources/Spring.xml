@@ -3,6 +3,10 @@
     <bean id="userDao" class="com.krxk.minispring.test.beans.UserDao" />
     <bean id="userService" class="com.krxk.minispring.test.beans.UserService">
         <property name="uid" value="1"/>
+        <property name="company" value="腾讯"/>
         <property name="userDao" ref="userDao"/>
     </bean>
+
+    <bean class="com.krxk.minispring.test.common.MyBeanPostProcessor"/>
+    <bean class="com.krxk.minispring.test.common.MyBeanFactoryPostProcessor"/>
 </beans>
