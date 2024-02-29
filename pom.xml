@@ -37,6 +37,13 @@
             <version>5.8.26</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.openjdk.jol/jol-cli -->
+        <dependency>
+            <groupId>org.openjdk.jol</groupId>
+            <artifactId>jol-cli</artifactId>
+            <version>0.17</version>
+        </dependency>
+
 
     </dependencies>
     

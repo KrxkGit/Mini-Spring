@@ -9,7 +9,7 @@ public class UserService implements InitializingBean, DisposableBean, BeanNameAw
         ApplicationContextAware, BeanFactoryAware {
     private String uid;
     private String company;
-    private UserDao userDao;
+    private IUserDao userDao;
     private ApplicationContext applicationContext;
     private BeanFactory beanFactory;
 
@@ -20,15 +20,6 @@ public class UserService implements InitializingBean, DisposableBean, BeanNameAw
     public void setUid(String uid) {
         this.uid = uid;
     }
-
-    public UserDao getUserDao() {
-        return userDao;
-    }
-
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
 
     public void queryUserInfo() {
         System.out.println("查询用户信息 " + uid + " 公司:" +company + " " + userDao.queryUserName(uid));
