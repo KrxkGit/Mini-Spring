@@ -14,6 +14,7 @@ import com.krxk.minispring.test.beans.UserDao;
 import com.krxk.minispring.test.beans.UserService;
 import com.krxk.minispring.test.common.MyBeanFactoryPostProcessor;
 import com.krxk.minispring.test.common.MyBeanPostProcessor;
+import com.krxk.minispring.test.event.CustomEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.openjdk.jol.info.ClassLayout;
@@ -147,5 +148,12 @@ public class ApiTest {
         UserService userService = applicationContext.getBean("userService", UserService.class);
         userService.queryUserInfo();
     }
+    @Test
+    public void test_event() {
+        ClassPathXmlApplicationContext applicationContext =
+                new ClassPathXmlApplicationContext("classpath:resources/Spring.xml");
+        applicationContext.publishEvent(new CustomEvent(applicationContext, 1019129009086763L, "成功了！"));
 
+        applicationContext.registerShutdownHook();
+    }
 }

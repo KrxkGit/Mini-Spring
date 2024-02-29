@@ -11,4 +11,9 @@
     <bean id="proxyUserDao" class="com.krxk.minispring.test.beans.ProxyBeanFactory"/>
     <bean class="com.krxk.minispring.test.common.MyBeanPostProcessor"/>
     <bean class="com.krxk.minispring.test.common.MyBeanFactoryPostProcessor"/>
+
+    <bean class="com.krxk.minispring.test.event.ContextClosedEventListener"/>
+    <bean class="com.krxk.minispring.test.event.ContextRefreshedEventListener"/>
+    <bean class="com.krxk.minispring.test.event.CustomEventListener"/>
+
 </beans>
