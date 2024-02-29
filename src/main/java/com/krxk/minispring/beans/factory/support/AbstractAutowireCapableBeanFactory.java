@@ -5,8 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.krxk.minispring.beans.BeansException;
 import com.krxk.minispring.beans.PropertyValue;
 import com.krxk.minispring.beans.PropertyValues;
-import com.krxk.minispring.beans.factory.DisposableBean;
-import com.krxk.minispring.beans.factory.InitializingBean;
+import com.krxk.minispring.beans.factory.*;
 import com.krxk.minispring.beans.factory.config.BeanDefinition;
 import com.krxk.minispring.beans.factory.config.BeanPostProcessor;
 import com.krxk.minispring.beans.factory.config.BeanReference;
@@ -103,6 +102,20 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+        // invokeAwareMethods
+        if (bean instanceof Aware) {
+            if (bean instanceof BeanFactoryAware beanFactoryAware) {
+                beanFactoryAware.setBeanFactory(this);
+            }
+            if (bean instanceof BeanClassLoaderAware beanClassLoaderAware) {
+                beanClassLoaderAware.setBeanClassLoader(getBeanClassLoader());
+            }
+            if (bean instanceof BeanNameAware beanNameAware) {
+                beanNameAware.setBeanName(beanName);
+            }
+        }
+
+
         // 执行 BeanPostProcessor Before 处理
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
         // 待完成内容：invokeInitMethods(beanName, wrappedBean, beanDefinition)
