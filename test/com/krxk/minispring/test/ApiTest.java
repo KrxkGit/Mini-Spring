@@ -106,6 +106,7 @@ public class ApiTest {
         // 使用上下文
         ClassPathXmlApplicationContext applicationContext =
                 new ClassPathXmlApplicationContext("classpath:resources/Spring.xml");
+        applicationContext.registerShutdownHook();
 
         UserService userService = applicationContext.getBean("userService", UserService.class);
         userService.queryUserInfo();

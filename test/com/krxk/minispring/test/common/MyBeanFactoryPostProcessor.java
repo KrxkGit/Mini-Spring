@@ -6,7 +6,6 @@ import com.krxk.minispring.beans.PropertyValues;
 import com.krxk.minispring.beans.factory.ConfigurableListableBeanFactory;
 import com.krxk.minispring.beans.factory.config.BeanDefinition;
 import com.krxk.minispring.beans.factory.config.BeanFactoryPostProcessor;
-import com.krxk.minispring.beans.factory.config.BeanPostProcessor;
 
 public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     @Override

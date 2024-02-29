@@ -1,7 +1,6 @@
 package com.krxk.minispring.beans.factory.support;
 
 import com.krxk.minispring.beans.BeansException;
-import com.krxk.minispring.beans.factory.BeanFactory;
 import com.krxk.minispring.beans.factory.config.BeanDefinition;
 import com.krxk.minispring.beans.factory.config.BeanPostProcessor;
 import com.krxk.minispring.beans.factory.config.ConfigurableBeanFactory;
