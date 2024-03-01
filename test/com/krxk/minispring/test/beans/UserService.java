@@ -5,7 +5,9 @@ import com.krxk.minispring.beans.factory.*;
 import com.krxk.minispring.context.ApplicationContext;
 import com.krxk.minispring.context.ApplicationContextAware;
 
-public class UserService implements InitializingBean, DisposableBean, BeanNameAware,
+import java.util.Random;
+
+public class UserService implements IUserService, InitializingBean, DisposableBean, BeanNameAware,
         ApplicationContextAware, BeanFactoryAware {
     private String uid;
     private String company;
@@ -21,8 +23,20 @@ public class UserService implements InitializingBean, DisposableBean, BeanNameAw
         this.uid = uid;
     }
 
+    @Override
     public void queryUserInfo() {
-        System.out.println("查询用户信息 " + uid + " 公司:" +company + " " + userDao.queryUserName(uid));
+//        System.out.println("查询用户信息 " + uid + " 公司:" +company + " " + userDao.queryUserName(uid));
+        System.out.println("查询用户信息 " + uid + " 公司:" +company + " ");
+    }
+
+    @Override
+    public String register(String userName) {
+        try {
+            Thread.sleep(new Random(1).nextInt(100));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "注册用户：" + userName + " success！";
     }
 
     @Override
