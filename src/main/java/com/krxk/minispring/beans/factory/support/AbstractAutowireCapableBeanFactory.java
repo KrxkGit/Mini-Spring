@@ -9,6 +9,7 @@ import com.krxk.minispring.beans.factory.*;
 import com.krxk.minispring.beans.factory.config.BeanDefinition;
 import com.krxk.minispring.beans.factory.config.BeanPostProcessor;
 import com.krxk.minispring.beans.factory.config.BeanReference;
+import com.krxk.minispring.beans.factory.config.InstantiationAwareBeanPostProcessor;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -18,8 +19,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     private InstantiationStrategy instantiationStrategy = new SimpleInstantiationStrategy();
     @Override
     protected Object createBean(String beanName, BeanDefinition beanDefinition, Object[] args) throws BeansException {
-        Object bean;
+        Object bean = null;
         try {
+            // 判断是否返回代理 Bean 对象
+            bean = resolveBeforeInstantiation(beanName, beanDefinition);
+            if (null != bean) {
+                return bean;
+            }
             // 创建对象
             bean = createBeanInstance(beanDefinition, beanName, args);
             // 填充属性
@@ -102,6 +108,25 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             result = current;
         }
         return result;
+    }
+
+    protected Object resolveBeforeInstantiation(String beanName, BeanDefinition beanDefinition) {
+        Object bean = applyBeanPostProcessorsBeforeInstantiation(beanDefinition.getBeanClass(), beanName);
+        if (null != bean) {
+            bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
+        }
+        return bean;
+    }
+    protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, String beanName) {
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor instantiationAwareBeanPostProcessor) {
+                Object result = instantiationAwareBeanPostProcessor.postProcessBeforeInstantiation(beanClass, beanName);
+                if (null != result) {
+                    return result;
+                }
+            }
+        }
+        return null;
     }
 
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {

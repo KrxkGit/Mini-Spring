@@ -244,4 +244,13 @@ public class ApiTest {
 //        System.out.println("测试结果：" + proxy_cglib.register("花花"));
     }
 
+    @Test
+    public void test_aop_xml() {
+        ClassPathXmlApplicationContext applicationContext =
+                new ClassPathXmlApplicationContext("classpath:resources/Spring.xml");
+        IUserService userService = applicationContext.getBean("userService", IUserService.class);
+        userService.queryUserInfo();
+    }
+
+
 }

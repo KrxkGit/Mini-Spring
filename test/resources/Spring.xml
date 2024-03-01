@@ -16,4 +16,16 @@
     <bean class="com.krxk.minispring.test.event.ContextRefreshedEventListener"/>
     <bean class="com.krxk.minispring.test.event.CustomEventListener"/>
 
+    <bean class="com.krxk.minispring.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+    <bean id="beforeAdvice" class="com.krxk.minispring.test.beans.UserServiceBeforeAdvice"/>
+
+    <bean id="methodInterceptor" class="com.krxk.minispring.aop.framework.adapter.MethodBeforeAdviceInterceptor">
+        <property name="advice" ref="beforeAdvice"/>
+    </bean>
+
+    <bean id="pointcutAdvisor" class="com.krxk.minispring.aop.aspectj.AspectJExpressionPointcutAdvisor">
+        <property name="expression" value="execution(* com.krxk.minispring.test.beans.IUserService.*(..))"/>
+        <property name="advice" ref="methodInterceptor"/>
+    </bean>
+
 </beans>
