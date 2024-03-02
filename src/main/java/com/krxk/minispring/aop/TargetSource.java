@@ -1,5 +1,7 @@
 package com.krxk.minispring.aop;
 
+import com.krxk.minispring.utils.ClassUtils;
+
 public record TargetSource(Object target) {
     /**
      * Return the type of targets returned by this {@link TargetSource}.
@@ -10,7 +12,9 @@ public record TargetSource(Object target) {
      * @return the type of targets returned by this {@link TargetSource}
      */
     public Class<?>[] getTargetClass() {
-        return this.target.getClass().getInterfaces();
+        Class<?> clazz = this.target.getClass();
+        clazz = ClassUtils.isCglibProxyClass(clazz) ? clazz.getSuperclass() : clazz;
+        return clazz.getInterfaces();
     }
 
     /**

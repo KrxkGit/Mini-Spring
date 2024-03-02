@@ -29,25 +29,20 @@ public class DefaultAdvisorAutoProxyCreator implements BeanFactoryAware, Instant
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        return bean;
-    }
-
-    @Override
-    public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
-        if (isInfrastructureClass(beanClass)) {
-            return null;
+        if (isInfrastructureClass(bean.getClass())) {
+            return bean;
         }
         Collection<AspectJExpressionPointcutAdvisor> aspectJExpressionPointcutAdvisors =
                 beanFactory.getBeansOfType(AspectJExpressionPointcutAdvisor.class).values();
         for (AspectJExpressionPointcutAdvisor advisor : aspectJExpressionPointcutAdvisors) {
             ClassFilter classFilter = advisor.getPointcut().getClassFilter();
-            if (!classFilter.matches(beanClass)) {
+            if (!classFilter.matches(bean.getClass())) {
                 continue;
             }
             AdvisedSupport advisedSupport = new AdvisedSupport();
             TargetSource targetSource = null;
             try {
-                targetSource = new TargetSource(beanClass.getDeclaredConstructor().newInstance());
+                targetSource = new TargetSource(bean);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -58,6 +53,16 @@ public class DefaultAdvisorAutoProxyCreator implements BeanFactoryAware, Instant
 
             return new ProxyFactory(advisedSupport).getProxy();
         }
+        return bean;
+    }
+
+    @Override
+    public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+        return true;
+    }
+
+    @Override
+    public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
         return null;
     }
     private boolean isInfrastructureClass(Class<?> beanClass) {

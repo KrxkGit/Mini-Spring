@@ -2,24 +2,21 @@ package com.krxk.minispring.test.beans;
 
 import com.krxk.minispring.beans.BeansException;
 import com.krxk.minispring.beans.factory.*;
-import com.krxk.minispring.beans.factory.annotation.Autowired;
-import com.krxk.minispring.beans.factory.annotation.Value;
 import com.krxk.minispring.context.ApplicationContext;
 import com.krxk.minispring.context.ApplicationContextAware;
-import com.krxk.minispring.stereotype.Component;
 
 import java.util.Random;
 
-@Component("userService")
+//@Component("userService")
 public class UserService implements IUserService, InitializingBean, DisposableBean, BeanNameAware,
         ApplicationContextAware, BeanFactoryAware {
     private String uid;
     private String company;
-    @Autowired
+//    @Autowired
     private UserDao userDao;
     private ApplicationContext applicationContext;
     private BeanFactory beanFactory;
-    @Value("${token}")
+//    @Value("${token}")
     private String token;
 
     public String getUid() {
@@ -42,8 +39,8 @@ public class UserService implements IUserService, InitializingBean, DisposableBe
     @Override
     public void queryUserInfo() {
 //        System.out.println("查询用户信息 " + uid + " 公司:" +company + " " + userDao.queryUserName(uid));
-//        System.out.println("查询用户信息 " + uid + " 公司:" +company + " UserDao: " );
-        System.out.println("查询用户信息 " + uid + " 公司:" +company + " UserDao: " + userDao.queryUserName("1"));
+        System.out.println("查询用户信息 " + uid + " 公司:" +company);
+//        System.out.println("查询用户信息 " + uid + " 公司:" +company + " UserDao: " + userDao.queryUserName("1"));
     }
 
     @Override

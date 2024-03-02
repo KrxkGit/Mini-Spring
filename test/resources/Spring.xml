@@ -5,12 +5,12 @@
     <bean id="userService" class="com.krxk.minispring.test.beans.UserService" scope="prototype">
         <property name="uid" value="1"/>
         <property name="company" value="腾讯"/>
-        <property name="userDao" ref="proxyUserDao"/>
+<!--        <property name="userDao" ref="proxyUserDao"/>-->
     </bean>
 
-    <bean id="proxyUserDao" class="com.krxk.minispring.test.beans.ProxyBeanFactory"/>
-    <bean class="com.krxk.minispring.test.common.MyBeanPostProcessor"/>
-    <bean class="com.krxk.minispring.test.common.MyBeanFactoryPostProcessor"/>
+<!--    <bean id="proxyUserDao" class="com.krxk.minispring.test.beans.ProxyBeanFactory"/>-->
+<!--    <bean class="com.krxk.minispring.test.common.MyBeanPostProcessor"/>-->
+<!--    <bean class="com.krxk.minispring.test.common.MyBeanFactoryPostProcessor"/>-->
 
     <bean class="com.krxk.minispring.test.event.ContextClosedEventListener"/>
     <bean class="com.krxk.minispring.test.event.ContextRefreshedEventListener"/>
