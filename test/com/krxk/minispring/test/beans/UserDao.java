@@ -1,7 +1,6 @@
 package com.krxk.minispring.test.beans;
 
 import java.util.HashMap;
-
 public class UserDao {
     private static HashMap<String, String> hashMap = new HashMap<>();
 

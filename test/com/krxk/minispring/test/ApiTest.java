@@ -268,4 +268,14 @@ public class ApiTest {
         userService.queryUserInfo();
     }
 
+    @Test
+    public void test_scan_by_annotation() {
+        ClassPathXmlApplicationContext applicationContext =
+                new ClassPathXmlApplicationContext("classpath:resources/Spring-property-annotation.xml");
+        IUserService userService = applicationContext.getBean("userService", IUserService.class);
+        userService.queryUserInfo();
+        System.out.println("Token: " + userService.getToken());
+    }
+
+
 }

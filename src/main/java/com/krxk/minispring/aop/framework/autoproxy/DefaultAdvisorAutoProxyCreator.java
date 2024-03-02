@@ -4,6 +4,7 @@ import com.krxk.minispring.aop.*;
 import com.krxk.minispring.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import com.krxk.minispring.aop.framework.ProxyFactory;
 import com.krxk.minispring.beans.BeansException;
+import com.krxk.minispring.beans.PropertyValues;
 import com.krxk.minispring.beans.factory.BeanFactory;
 import com.krxk.minispring.beans.factory.BeanFactoryAware;
 import com.krxk.minispring.beans.factory.config.InstantiationAwareBeanPostProcessor;
@@ -62,5 +63,10 @@ public class DefaultAdvisorAutoProxyCreator implements BeanFactoryAware, Instant
     private boolean isInfrastructureClass(Class<?> beanClass) {
         return Advice.class.isAssignableFrom(beanClass) || Pointcut.class.isAssignableFrom(beanClass) ||
                 Advisor.class.isAssignableFrom(beanClass);
+    }
+
+    @Override
+    public PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+        return pvs;
     }
 }

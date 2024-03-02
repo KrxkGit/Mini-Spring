@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans>
+    <bean class="com.krxk.minispring.test.beans.UserDao" init-method="initDataMethod"
+          destroy-method="destroyDataMethod"/>
+    <bean class="com.krxk.minispring.beans.factory.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:resources/token.properties"/>
+    </bean>
+    <component-scan base-package="com.krxk.minispring.test.beans"/>
+
+
+</beans>

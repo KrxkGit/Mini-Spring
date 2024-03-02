@@ -1,6 +1,7 @@
 package com.krxk.minispring.context.annotation;
 
 import cn.hutool.core.util.StrUtil;
+import com.krxk.minispring.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import com.krxk.minispring.beans.factory.config.BeanDefinition;
 import com.krxk.minispring.beans.factory.support.BeanDefinitionRegistry;
 import com.krxk.minispring.stereotype.Component;
@@ -26,6 +27,10 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
                 registry.registerBeanDefinition(determineBeanName(beanDefinition) ,beanDefinition);
             }
         }
+        // 注册处理注解的 BeanPostProcessor（@Autowired、@Value）
+        registry.registerBeanDefinition(
+                "com.krxk.minispring.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor",
+                new BeanDefinition(AutowiredAnnotationBeanPostProcessor.class));
     }
 
     private String resolveBeanScope(BeanDefinition beanDefinition) {
