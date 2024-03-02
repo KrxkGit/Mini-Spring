@@ -4,9 +4,11 @@ import com.krxk.minispring.beans.BeansException;
 import com.krxk.minispring.beans.factory.*;
 import com.krxk.minispring.context.ApplicationContext;
 import com.krxk.minispring.context.ApplicationContextAware;
+import com.krxk.minispring.stereotype.Component;
 
 import java.util.Random;
 
+@Component("userService")
 public class UserService implements IUserService, InitializingBean, DisposableBean, BeanNameAware,
         ApplicationContextAware, BeanFactoryAware {
     private String uid;
@@ -14,6 +16,7 @@ public class UserService implements IUserService, InitializingBean, DisposableBe
     private IUserDao userDao;
     private ApplicationContext applicationContext;
     private BeanFactory beanFactory;
+    private String token;
 
     public String getUid() {
         return uid;
@@ -21,6 +24,15 @@ public class UserService implements IUserService, InitializingBean, DisposableBe
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    @Override
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override

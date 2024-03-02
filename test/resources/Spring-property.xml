@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans>
+<!--    <bean id="userDao" class="com.krxk.minispring.test.beans.UserDao" init-method="initDataMethod"-->
+<!--          destroy-method="destroyDataMethod"/>-->
+    <bean class="com.krxk.minispring.beans.factory.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:resources/token.properties"/>
+    </bean>
+    <bean id="userService" class="com.krxk.minispring.test.beans.UserService" scope="singleton">
+        <property name="uid" value="1"/>
+        <property name="company" value="腾讯"/>
+        <property name="userDao" ref="proxyUserDao"/>
+        <property name="token" value="${token}"/>
+    </bean>
+
+    <bean id="proxyUserDao" class="com.krxk.minispring.test.beans.ProxyBeanFactory"/>
+    <bean class="com.krxk.minispring.test.common.MyBeanPostProcessor"/>
+    <bean class="com.krxk.minispring.test.common.MyBeanFactoryPostProcessor"/>
+
+<!--    <bean class="com.krxk.minispring.test.event.ContextClosedEventListener"/>-->
+<!--    <bean class="com.krxk.minispring.test.event.ContextRefreshedEventListener"/>-->
+<!--    <bean class="com.krxk.minispring.test.event.CustomEventListener"/>-->
+
+<!--    <bean class="com.krxk.minispring.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>-->
+<!--    <bean id="beforeAdvice" class="com.krxk.minispring.test.beans.UserServiceBeforeAdvice"/>-->
+
+<!--    <bean id="methodInterceptor" class="com.krxk.minispring.aop.framework.adapter.MethodBeforeAdviceInterceptor">-->
+<!--        <property name="advice" ref="beforeAdvice"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="pointcutAdvisor" class="com.krxk.minispring.aop.aspectj.AspectJExpressionPointcutAdvisor">-->
+<!--        <property name="expression" value="execution(* com.krxk.minispring.test.beans.IUserService.*(..))"/>-->
+<!--        <property name="advice" ref="methodInterceptor"/>-->
+<!--    </bean>-->
+
+</beans>
